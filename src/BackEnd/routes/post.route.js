@@ -1,54 +1,47 @@
 const express = require('express');
 const router = express.Router();
 
-const { blogs, users } = require('../data/data.js'); 
+const blogs = require("../models/blog.model")
 
-router.post('/api/login', (req, res) => {
-    const { username, password } = req.body;
-
-    if (users.some(user => user.username === username && user.password === password)) {
-        res.json({ 
-            success: true, 
-            message: 'Đăng nhập thành công'
-        });
-    } else {
-        res.status(404).json({ 
-            success: false, 
-            message: 'Tên đăng nhập hoặc mật khẩu không đúng' 
-        });
-    }
+router.get('/api/posts', async (req, res) => {
+    res.json(await blogs.find({}));
 });
 
-router.get('/api/posts', (req, res) => {
-    res.json(blogs);
+
+router.post("/api/post", async (req, res) => {
+    const post = {
+        title: req.body.title,
+        description: req.body.description
+    };
+    const newPost = new blogs(post);
+    await newPost.save()
+    res.status(200).send({ message: "Posted successful" });
 });
 
-router.get('/api/posts/:slug', (req, res) => {
-    const blog = blogs.find(b => b.slug === req.params.slug);
+
+router.get('/api/posts/:slug', async (req, res) => {
+    const blog = await blogs.findOne({
+        slug: req.params.slug
+    })
     res.json(blog);
 });
 
-router.post('/api/posts/:slug/comments', (req, res) => {
-    const blog = blogs.find(b => b.slug === req.params.slug);
+
+router.post('/api/posts/:slug/comments', async (req, res) => {
+    const blog = await blogs.findOne({
+        slug: req.params.slug
+    });
 
     if(!blog) {
         return res.status(404).json({ message: 'Blog not found' });
     } 
+    
     const comment = {
         text: req.body.text
     };
     blog.comments.push(comment);
+    await blog.save()
     res.status(200).send({ message: "Commented successful" });
-});
-
-router.post("/api/post", (req, res) => {
-    const post = {
-        slug: req.body.slug,
-        title: req.body.title,
-        description: req.body.description
-    };
-    blogs.push(post);
-    res.status(200).send({ message: "Posted successful" });
 });
 
 module.exports = router;

@@ -24,11 +24,8 @@ function NewPost() {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div style={{ padding: 10 }}>{" "}<br />
-                <span>Slug:</span><br />
-                
-                <input type="text" {...register("slug", { required: true })} /> <br />
-                {errors.slug && <div style={{ color: "red" }}>Slug is required</div>}
-                                <span>Title:</span><br />
+               
+                <span>Title:</span><br />
                 <input type="text" {...register("title", { required: true })} /> <br />
                 {errors.title && <div style={{ color: "red" }}>Title is required</div>}
                 
