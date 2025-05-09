@@ -12,7 +12,7 @@ router.post('/api/login', (req, res) => {
             message: 'Đăng nhập thành công'
         });
     } else {
-        res.status(401).json({ 
+        res.status(404).json({ 
             success: false, 
             message: 'Tên đăng nhập hoặc mật khẩu không đúng' 
         });
@@ -26,6 +26,19 @@ router.get('/api/posts', (req, res) => {
 router.get('/api/posts/:slug', (req, res) => {
     const blog = blogs.find(b => b.slug === req.params.slug);
     res.json(blog);
+});
+
+router.post('/api/posts/:slug/comments', (req, res) => {
+    const blog = blogs.find(b => b.slug === req.params.slug);
+
+    if(!blog) {
+        return res.status(404).json({ message: 'Blog not found' });
+    } 
+    const comment = {
+        text: req.body.text
+    };
+    blog.comments.push(comment);
+    res.status(200).send({ message: "Commented successful" });
 });
 
 router.post("/api/post", (req, res) => {

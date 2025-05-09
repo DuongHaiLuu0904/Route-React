@@ -10,6 +10,8 @@ export default function Posts() {
       .then(data => setPosts(data));
   }, []);
 
+ 
+
   return (
     <div>
       <h2>Danh sách bài viết</h2>
