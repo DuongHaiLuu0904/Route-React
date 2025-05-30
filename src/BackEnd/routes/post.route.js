@@ -2,15 +2,15 @@ const express = require('express');
 const router = express.Router();
 const { verifyToken } = require('../middleware/auth.middleware');
 
-const blogs = require("../models/blog.model");
+const posts = require("../models/post.model");
 
 
 router.get('/api/posts', async (req, res) => {
-    res.json(await blogs.find({}));
+    res.json(await posts.find({}));
 });
 
 router.get('/api/posts/:slug', async (req, res) => {
-    const blog = await blogs.findOne({
+    const blog = await posts.findOne({
         slug: req.params.slug
     })
     res.json(blog);
@@ -24,7 +24,7 @@ router.post("/api/post", verifyToken, async (req, res) => {
             description: req.body.description,
             author: req.user.id 
         };
-        const newPost = new blogs(post);
+        const newPost = new posts(post);
         await newPost.save();
         res.status(200).json({ 
             success: true,
@@ -41,7 +41,7 @@ router.post("/api/post", verifyToken, async (req, res) => {
 
 router.post('/api/posts/:slug/comments', verifyToken, async (req, res) => {
     try {
-        const blog = await blogs.findOne({
+        const blog = await posts.findOne({
             slug: req.params.slug
         });
 
@@ -80,6 +80,9 @@ router.post("/api/feedback", verifyToken, async (req, res) => {
             description: req.body.description,
             user: req.user.id 
         };
+
+        const newPost = new posts(post);
+        await newPost.save();
 
         res.status(200).json({ 
             success: true,

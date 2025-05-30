@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const slug = require('mongoose-slug-updater')
 mongoose.plugin(slug)
 
-const blogSchema = new mongoose.Schema(
+const postSchema = new mongoose.Schema(
     {
         title: String,
         description: String,
@@ -16,5 +16,5 @@ const blogSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-const Blog = mongoose.model('Blog', blogSchema, 'blogs');
-module.exports = Blog;
+const Post = mongoose.model('Post', postSchema, 'posts');
+module.exports = Post;
