@@ -48,7 +48,7 @@ export default function PostDetail() {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json",
-                    ...getAuthHeader() // Add the authorization header
+                    ...getAuthHeader() 
                 },
                 body: comment,
             });
@@ -56,7 +56,6 @@ export default function PostDetail() {
             const result = await response.json();
 
             if (response.ok) {
-                // Refresh the post to show the new comment
                 fetch(`${API_URL}/api/posts/${slug}`)
                     .then(res => res.json())
                     .then(data => {
@@ -64,7 +63,6 @@ export default function PostDetail() {
                         setLoading(false);
                     });
 
-                // Clear the comment form
                 reset();
             } else {
                 alert(result.message || "Failed to create comment!");

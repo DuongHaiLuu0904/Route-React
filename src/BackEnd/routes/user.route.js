@@ -6,17 +6,14 @@ const { verifyToken } = require('../middleware/auth.middleware');
 
 const User = require("../models/user.model");
 
-
 router.post('/api/register', async (req, res) => {
     const { username, password } = req.body;
-    
     if (!username || !password) {
         return res.status(400).json({
             success: false,
             message: 'Tên đăng nhập và mật khẩu là bắt buộc'
         });
     }
-    
     try {
         const existingUser = await User.findOne({ username });
         if (existingUser) {
@@ -30,21 +27,18 @@ router.post('/api/register', async (req, res) => {
             username,
             password 
         });
-
         await newUser.save();
- 
         const user = {
             id: newUser._id,
             username: newUser.username
         };
-        
+
         jwt.sign(
             { user }, 
             JWT_SECRET, 
             { expiresIn: '24h' }, 
             (err, token) => {
                 if (err) {
-                    console.error('JWT sign error:', err);
                     res.status(500).json({
                         success: false,
                         message: 'Lỗi khi tạo token'
@@ -59,7 +53,6 @@ router.post('/api/register', async (req, res) => {
             }
         );
     } catch (error) {
-        console.error('Register error:', error);
         res.status(500).json({
             success: false,
             message: 'Lỗi đăng ký người dùng',
@@ -70,7 +63,6 @@ router.post('/api/register', async (req, res) => {
 
 router.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
-
     if (!username || !password) {
         return res.status(400).json({
             success: false,
@@ -79,14 +71,10 @@ router.post('/api/login', async (req, res) => {
     }
 
     try {
-        console.log('Login attempt:', { username });
-        
         const checkUser = await User.find({
             username: username,
             password: password
         });
-
-        console.log('User found:', checkUser.length > 0);
 
         if (checkUser.length > 0) {
             const user = {
@@ -99,7 +87,6 @@ router.post('/api/login', async (req, res) => {
                 { expiresIn: '24h' }, 
                 (err, token) => {
                     if (err) {
-                        console.error('JWT sign error:', err);
                         res.status(500).json({
                             success: false,
                             message: 'Lỗi khi tạo token'
@@ -120,7 +107,6 @@ router.post('/api/login', async (req, res) => {
             });
         }
     } catch (error) {
-        console.error('Login error:', error);
         res.status(500).json({
             success: false,
             message: 'Lỗi đăng nhập',
@@ -144,7 +130,6 @@ router.get('/api/user/profile', verifyToken, async (req, res) => {
             user
         });
     } catch (error) {
-        console.error('Profile fetch error:', error);
         res.status(500).json({
             success: false,
             message: 'Lỗi server',

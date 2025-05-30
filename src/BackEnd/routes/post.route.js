@@ -54,10 +54,12 @@ router.post('/api/posts/:slug/comments', verifyToken, async (req, res) => {
         
         const comment = {
             text: req.body.text,
-            user: req.user.id // Add the user ID from the token
+            user: req.user.id 
         };
+
         blog.comments.push(comment);
         await blog.save();
+
         res.status(200).json({ 
             success: true,
             message: "Commented successful" 
@@ -76,9 +78,9 @@ router.post("/api/feedback", verifyToken, async (req, res) => {
         const post = {
             title: req.body.title,
             description: req.body.description,
-            user: req.user.id // Add the user ID from the token
+            user: req.user.id 
         };
-        // Implement feedback saving logic here
+
         res.status(200).json({ 
             success: true,
             message: "Feedback submitted successfully" 

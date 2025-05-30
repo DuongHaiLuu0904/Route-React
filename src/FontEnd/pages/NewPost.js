@@ -11,8 +11,7 @@ function NewPost() {
     const { register, handleSubmit, formState: { errors }, } = useForm();
     const { isAuthenticated, getAuthHeader } = useAuth();
     const navigate = useNavigate();
-    
-    // Redirect to login if not authenticated
+
     if (!isAuthenticated) {
         navigate("/login");
         return null;
@@ -28,7 +27,7 @@ function NewPost() {
                 method: "post", 
                 headers: {
                     "Content-Type": "application/json",
-                    ...getAuthHeader() // Add the authorization header
+                    ...getAuthHeader() 
                 },
                 body: post,
             });
@@ -37,7 +36,6 @@ function NewPost() {
             
             if (response.ok) {
                 setNewPost("Post created successfully!");
-                // Redirect to home page after successful post
                 setTimeout(() => navigate("/"), 2000);
             } else {
                 setError(result.message || "Failed to create post!");
@@ -60,16 +58,22 @@ function NewPost() {
                 {error && <div style={{ color: "red" }}>{error}</div>}
                 {newPost && <div style={{ color: "green" }}>{newPost}</div>}
                
-                <span>Title:</span><br />
-                <input type="text" {...register("title", { required: true })} /> <br />
+                <span>Title:</span>
+                <br />
+                <input type="text" {...register("title", { required: true })} /> 
+                <br />
                 {errors.title && <div style={{ color: "red" }}>Title is required</div>}
-                
-                <span>Description:</span><br />
-                <input type="text" {...register("description", { required: true })} /> <br />
+                <br />
+
+                <span>Description:</span>
+                <br />
+                <input type="text" {...register("description", { required: true })} /> 
+                <br />
                 {errors.description && <div style={{ color: "red" }}>Description is required</div>}
                 <br />
                 
-                <br /><button type="submit" disabled={loading}>
+                <br />
+                <button type="submit" disabled={loading}>
                     {loading ? "Đang tạo..." : "Add New"}
                 </button>
             </div>

@@ -61,6 +61,7 @@ export default function Register() {
             <form onSubmit={handleSubmit}>
                 <h2>Đăng ký tài khoản</h2>
                 {error && <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>}
+
                 <div>
                     <label>Tên đăng nhập:</label>
                     <input
@@ -70,6 +71,7 @@ export default function Register() {
                         required
                     />
                 </div>
+
                 <div>
                     <label>Mật khẩu:</label>
                     <input
@@ -79,6 +81,7 @@ export default function Register() {
                         required
                     />
                 </div>
+
                 <div>
                     <label>Xác nhận mật khẩu:</label>
                     <input
@@ -88,6 +91,7 @@ export default function Register() {
                         required
                     />
                 </div>
+                
                 <button type="submit" disabled={loading}>
                     {loading ? "Đang xử lý..." : "Đăng ký"}
                 </button>
